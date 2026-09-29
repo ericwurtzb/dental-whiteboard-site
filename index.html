@@ -3,31 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Whiteboard — LAN status board for the front desk</title>
-<meta name="description" content="A zero-config, LAN-only shared status board for dental offices. No cloud, no accounts, no server room.">
+<title>Whiteboard</title>
+<meta name="description" content="A shared status list that stays in sync on every computer in a dental office, without the internet or a server.">
 <style>
   :root{
-    --bg:#0b0f14;
-    --panel:#121821;
-    --panel-2:#161d28;
-    --border:#232b38;
-    --text:#e8edf4;
-    --muted:#9aa7b8;
-    --accent:#5eb0ff;
-    --accent-2:#7ee0c3;
-    --maize:#ffcb05;
-    --blue:#00274c;
+    --bg:#f6f7f9;
+    --panel:#ffffff;
+    --border:#e0e3e8;
+    --text:#1a1f26;
+    --muted:#5c6470;
+    --accent:#00274c;
+    --accent-2:#c9971f;
   }
-  @media (prefers-color-scheme: light){
+  @media (prefers-color-scheme: dark){
     :root{
-      --bg:#f6f8fb;
-      --panel:#ffffff;
-      --panel-2:#eef2f7;
-      --border:#dbe2eb;
-      --text:#101826;
-      --muted:#5a6676;
-      --accent:#1c6fd1;
-      --accent-2:#0f9d74;
+      --bg:#14171b;
+      --panel:#1c2027;
+      --border:#2c313a;
+      --text:#eceff2;
+      --muted:#9aa3ad;
+      --accent:#6fa8dc;
+      --accent-2:#e8c15c;
     }
   }
   *{box-sizing:border-box}
@@ -35,260 +31,247 @@
   body{
     background:var(--bg);
     color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.5;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;
   }
-  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
-  header.hero{
-    padding:72px 0 48px;
-    text-align:center;
-  }
-  .kicker{
-    display:inline-block;
-    font-size:13px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--accent);
-    background:color-mix(in srgb, var(--accent) 14%, transparent);
-    border:1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-    padding:5px 12px;
-    border-radius:999px;
-    margin-bottom:20px;
-  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+
+  header.hero{padding:64px 0 40px}
   h1{
-    font-size:clamp(32px,5vw,52px);
-    line-height:1.1;
-    margin:0 0 16px;
-    letter-spacing:-0.02em;
+    font-size:clamp(28px,4.5vw,42px);
+    line-height:1.2;
+    margin:0 0 18px;
+    max-width:11ch;
   }
   .sub{
-    font-size:19px;
+    font-size:18px;
     color:var(--muted);
-    max-width:620px;
-    margin:0 auto 32px;
+    max-width:52ch;
+    margin:0;
   }
-  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:12px 22px;
-    border-radius:10px;
-    font-weight:600;
-    font-size:15px;
-    text-decoration:none;
-    border:1px solid transparent;
-    transition:transform .12s ease, opacity .12s ease;
-  }
-  .btn:hover{transform:translateY(-1px)}
-  .btn-primary{background:var(--accent);color:#04121f}
-  .btn-ghost{background:transparent;color:var(--text);border-color:var(--border)}
 
-  section{padding:40px 0}
-  .board-mock{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:0;
-    overflow:hidden;
-    box-shadow:0 20px 60px -30px rgba(0,0,0,.5);
-  }
-  .board-mock .titlebar{
+  section{padding:36px 0;border-top:1px solid var(--border)}
+  header.hero{border-top:none}
+
+  h2{font-size:22px;margin:0 0 10px}
+  .lede{color:var(--muted);margin:0 0 24px;max-width:60ch}
+
+  .list{margin:0;padding:0;list-style:none}
+  .list li{
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:10px 16px;
-    background:var(--panel-2);
-    border-bottom:1px solid var(--border);
-    font-size:13px;
-    color:var(--muted);
-  }
-  .board-mock .titlebar .dots{display:flex;gap:6px}
-  .board-mock .titlebar .dots span{width:10px;height:10px;border-radius:50%;background:var(--border)}
-  .board-mock .rows{padding:10px}
-  .row{
-    display:flex;
-    align-items:baseline;
     gap:14px;
-    padding:12px 12px;
+    padding:16px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .list li:last-child{border-bottom:none}
+  .list .dot{
+    flex:none;
+    width:8px;height:8px;border-radius:50%;
+    background:var(--accent);
+    margin-top:9px;
+  }
+  .list h3{margin:0 0 4px;font-size:16px}
+  .list p{margin:0;color:var(--muted);font-size:15px}
+
+  /* --- App screenshot mockup, drawn to match the real window (380x520) --- */
+  .screenshot-row{display:flex;justify-content:center;padding:8px 0 12px}
+  .app{
+    width:300px;
     border-radius:8px;
-    font-size:15px;
+    overflow:hidden;
+    background:#00274C;
+    box-shadow:0 24px 50px -20px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.06);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
-  .row + .row{border-top:1px dashed var(--border)}
-  .row .time{color:var(--accent);font-variant-numeric:tabular-nums;min-width:64px}
-  .row .who{color:var(--muted);min-width:96px}
-  .row.stale{background:color-mix(in srgb, #ff7a59 12%, transparent)}
-  .row.stale .time{color:#ff7a59}
-
-  h2{font-size:26px;margin:0 0 8px;letter-spacing:-0.01em}
-  .lede{color:var(--muted);margin:0 0 28px;max-width:640px}
-
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-    gap:16px;
-  }
-  .card{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:20px;
-  }
-  .card .icon{font-size:22px;margin-bottom:10px}
-  .card h3{margin:0 0 6px;font-size:16px}
-  .card p{margin:0;color:var(--muted);font-size:14px}
-
-  .arch{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:24px;
-    color:var(--muted);
-    font-size:15px;
-  }
-  .arch strong{color:var(--text)}
-
-  .status-strip{
+  .app .banner{
+    background:#FFCB05;
+    color:#00274C;
+    font-size:12px;
+    font-weight:700;
+    padding:8px 12px;
     display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:20px;
+    justify-content:space-between;
+    align-items:center;
   }
-  .pill{
+  .app .banner button{
+    background:#00274C;
+    color:#FFCB05;
+    border:none;
+    border-radius:4px;
+    font-size:11px;
+    font-weight:700;
+    padding:4px 8px;
+  }
+  .app .entries{padding:12px 10px 4px;display:flex;flex-direction:column;gap:8px}
+  .app .entry{
+    border-left:4px solid #FFCB05;
+    background:#06305B;
+    border-radius:2px;
+    padding:8px 10px;
+  }
+  .app .entry.stale{border-left-color:#FF6B35}
+  .app .entry .msg{color:#fff;font-size:15px;font-weight:600}
+  .app .entry.stale .msg{color:#FFB29A}
+  .app .entry .meta{font-size:10px;margin-top:3px}
+  .app .entry .meta .who{color:#FFCB05}
+  .app .entry .meta .when{color:#8FA8C8}
+  .app .inputrow{
+    display:flex;
+    gap:8px;
+    padding:12px 10px;
+  }
+  .app .inputrow .field{
+    flex:1;
+    background:#06305B;
+    border:1px solid #274b70;
+    border-radius:6px;
+    color:#8FA8C8;
     font-size:13px;
-    padding:6px 12px;
-    border-radius:999px;
-    background:var(--panel-2);
-    border:1px solid var(--border);
-    color:var(--muted);
+    padding:8px 10px;
   }
-  .pill.done{color:var(--accent-2);border-color:color-mix(in srgb, var(--accent-2) 40%, transparent)}
+  .app .inputrow button{
+    background:#FFCB05;
+    color:#00274C;
+    border:none;
+    border-radius:6px;
+    font-weight:700;
+    font-size:13px;
+    padding:8px 14px;
+  }
+  .app .statusbar{
+    background:#001a35;
+    color:#8FA8C8;
+    font-size:10px;
+    padding:6px 10px;
+    display:flex;
+    justify-content:space-between;
+  }
+  .caption{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    margin:0 0 0;
+  }
 
   footer{
     border-top:1px solid var(--border);
-    margin-top:32px;
-    padding:32px 0 56px;
-    text-align:center;
+    margin-top:8px;
+    padding:28px 0 48px;
     color:var(--muted);
     font-size:13px;
-  }
-  footer a{color:var(--muted)}
-  footer .llc{margin-top:10px;opacity:.8}
-
-  code{
-    background:var(--panel-2);
-    border:1px solid var(--border);
-    border-radius:6px;
-    padding:2px 6px;
-    font-size:.9em;
   }
 </style>
 </head>
 <body>
   <div class="wrap">
     <header class="hero">
-      <span class="kicker">LAN-only · zero cloud · zero config</span>
-      <h1>The whiteboard, without the whiteboard.</h1>
+      <h1>One shared list, on every screen in the office.</h1>
       <p class="sub">
-        A shared, always-on-top status board for busy front desks — every
-        PC on the network shows the same timestamped list, in sync, with
-        no server to maintain and nothing leaving the building.
+        The front desk types an entry once. It shows up right away on every
+        other computer in the building — no internet connection needed, and
+        nothing to log in to.
       </p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#how-it-works">See how it works</a>
-      </div>
     </header>
 
     <section>
-      <div class="board-mock">
-        <div class="titlebar">
-          <span>Whiteboard</span>
-          <div class="dots"><span></span><span></span><span></span></div>
-        </div>
-        <div class="rows">
-          <div class="row"><span class="time">10:02</span><span class="who">front-desk-1</span><span>Op 2 Dr P — chart pull</span></div>
-          <div class="row"><span class="time">10:10</span><span class="who">op-2-pc</span><span>Op 2 Dr P</span></div>
-          <div class="row stale"><span class="time">09:14</span><span class="who">sterile-pc</span><span>Autoclave cycle running</span></div>
-          <div class="row"><span class="time">10:21</span><span class="who">front-desk-2</span><span>Room 4 ready for hygiene</span></div>
+      <div class="screenshot-row">
+        <div class="app">
+          <div class="banner">
+            <span>Update ready</span>
+            <button>Restart now</button>
+          </div>
+          <div class="entries">
+            <div class="entry">
+              <div class="msg">Op 2 Dr P — chart pull</div>
+              <div class="meta"><span class="who">front-desk-1</span> <span class="when">at 10:02</span></div>
+            </div>
+            <div class="entry stale">
+              <div class="msg">Autoclave cycle running</div>
+              <div class="meta"><span class="who">sterile-pc</span> <span class="when">at 09:14</span></div>
+            </div>
+            <div class="entry">
+              <div class="msg">Room 4 ready for hygiene</div>
+              <div class="meta"><span class="who">front-desk-2</span> <span class="when">at 10:21</span></div>
+            </div>
+          </div>
+          <div class="inputrow">
+            <div class="field">e.g. need dr JW</div>
+            <button>Add</button>
+          </div>
+          <div class="statusbar">
+            <span>front-desk-1 — connected · v0.4.1</span>
+            <span>⚙</span>
+          </div>
         </div>
       </div>
+      <p class="caption">The actual app window — small, always on top, easy to read from across the room.</p>
     </section>
 
     <section>
-      <h2>Why it exists</h2>
+      <h2>What it does</h2>
       <p class="lede">
-        Dental offices already run a whiteboard: a shared list of who's
-        where and what's next. This replaces the physical one with a synced
-        digital one — without asking a small office to stand up a server,
-        manage accounts, or trust a cloud vendor with patient-adjacent
-        scheduling notes.
+        It replaces a physical whiteboard with a digital one that every
+        computer keeps in sync automatically.
       </p>
-      <div class="grid">
-        <div class="card">
-          <div class="icon">🖧</div>
-          <h3>LAN-only, no cloud</h3>
-          <p>Every packet stays on the office network. No accounts, no external service, no internet dependency.</p>
-        </div>
-        <div class="card">
-          <div class="icon">⚡</div>
-          <h3>Zero configuration</h3>
-          <p>Install it on every machine and it just finds the others. No IP addresses to type in, no setup wizard.</p>
-        </div>
-        <div class="card">
-          <div class="icon">🔁</div>
-          <h3>Self-healing hub</h3>
-          <p>Instances elect a hub automatically. If that machine goes down, survivors re-elect a new one in seconds and reseed the board.</p>
-        </div>
-        <div class="card">
-          <div class="icon">🪟</div>
-          <h3>Runs on the machines you have</h3>
-          <p>Ships as a single Windows executable — no installer, no admin rights required, no runtime to pre-install.</p>
-        </div>
-        <div class="card">
-          <div class="icon">🎨</div>
-          <h3>Per-machine themes</h3>
-          <p>Seven built-in themes so each station can look how the office wants, with a Maize &amp; Blue default.</p>
-        </div>
-        <div class="card">
-          <div class="icon">🕒</div>
-          <h3>Stale-entry highlighting</h3>
-          <p>Entries left untouched past a configurable threshold visibly change color, so nothing sits forgotten.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="how-it-works">
-      <h2>How it stays in sync</h2>
-      <div class="arch">
-        Every install is identical. Instances find each other by UDP
-        broadcast; the lowest hostname promotes itself to <strong>hub</strong>
-        and serves the shared board over plain TCP. Everyone else connects
-        as a client. A version counter makes the freshest board win on
-        every merge, and additions are queued with an outbox so a message
-        survives even if the hub drops mid-send.
-      </div>
-      <div class="status-strip">
-        <span class="pill done">✓ Hub election &amp; failover</span>
-        <span class="pill done">✓ Kill-the-hub tested in CI</span>
-        <span class="pill done">✓ Peer-push auto-updater</span>
-        <span class="pill done">✓ Debug log with one-click copy</span>
-        <span class="pill">Field pilot in progress</span>
-      </div>
+      <ul class="list">
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h3>No internet required</h3>
+            <p>It only talks to other computers on the same office network. If the internet is out, this keeps working.</p>
+          </div>
+        </li>
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h3>Nothing to set up</h3>
+            <p>Install it on a computer and it finds the others on its own. No addresses to type in, no accounts to create.</p>
+          </div>
+        </li>
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h3>No single point of failure</h3>
+            <p>One computer keeps the master copy in the background. If that computer is turned off, another one takes over within seconds and nothing is lost.</p>
+          </div>
+        </li>
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h3>Works on the computers you already have</h3>
+            <p>It's a single program file. No installer, no admin password, no other software to install first.</p>
+          </div>
+        </li>
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h3>Old entries stand out</h3>
+            <p>After a set number of minutes, an entry changes color so it doesn't get forgotten on a busy day.</p>
+          </div>
+        </li>
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h3>Updates itself</h3>
+            <p>When a newer version is available, each computer downloads it in the background and shows a banner to restart when ready. Nobody has to reinstall anything by hand.</p>
+          </div>
+        </li>
+      </ul>
     </section>
 
     <section>
-      <h2>Get it running</h2>
-      <p class="lede">Grab the latest Windows build from the releases page, or build it yourself:</p>
-      <div class="arch" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;line-height:1.7">
-        dotnet run --project whiteboard/Whiteboard.App
-      </div>
+      <h2>Where things stand</h2>
+      <p class="lede">
+        This is being tested in a real dental office before it's used more
+        widely. It's built for one office's day-to-day use, not sold as a
+        product.
+      </p>
     </section>
   </div>
 
   <footer>
     <div class="wrap">
-      <p>Private LAN software, built for one dental office and shared as reference.</p>
-      <p class="llc">Built by Wurtzbacher Data &amp; Software, LLC</p>
+      <p>Wurtzbacher Data &amp; Software, LLC</p>
     </div>
   </footer>
 </body>
